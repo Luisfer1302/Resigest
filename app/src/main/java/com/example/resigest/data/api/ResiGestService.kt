@@ -1,16 +1,33 @@
 package com.example.resigest.data.api
 
-import com.example.resigest.data.model.*
+import com.example.resigest.data.model.HistorialItem
+import com.example.resigest.data.model.LoginRequest
+import com.example.resigest.data.model.LoginResponse
+import com.example.resigest.data.model.MedicacionItem
+import com.example.resigest.data.model.RegistroConstantesDTO
+import com.example.resigest.data.model.RegistroCuidadoDTO
+import com.example.resigest.data.model.RegistroEliminacionDTO
+import com.example.resigest.data.model.RegistroIngestaDTO
+import com.example.resigest.data.model.RegistroMedicacionDTO
+import com.example.resigest.data.model.ResidenteItem
+import com.example.resigest.data.model.SimpleResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ResiGestService {
+
     @POST("api/login")
-    suspend fun login(@Body body: LoginRequest): Response<LoginResponse>
+    suspend fun login(
+        @Body body: LoginRequest
+    ): Response<LoginResponse>
 
     @GET("api/residentes/planta/{plantaId}")
     suspend fun getResidentesPorPlanta(
@@ -18,17 +35,41 @@ interface ResiGestService {
         @Path("plantaId") plantaId: Int
     ): Response<List<ResidenteItem>>
 
+    @GET("api/residentes/{id}/medicacion")
+    suspend fun getMedicacion(
+        @Header("Authorization") token: String,
+        @Path("id") residenteId: Int
+    ): Response<List<MedicacionItem>>
+
+    @POST("api/registros/medicacion")
+    suspend fun postAdministrarMedicacion(
+        @Header("Authorization") token: String,
+        @Body body: RegistroMedicacionDTO
+    ): Response<SimpleResponse>
+
+    @POST("api/registros/eliminacion")
+    suspend fun postEliminacion(
+        @Header("Authorization") token: String,
+        @Body body: RegistroEliminacionDTO
+    ): Response<SimpleResponse>
+
+    @POST("api/registros/ingestas")
+    suspend fun postIngesta(
+        @Header("Authorization") token: String,
+        @Body body: RegistroIngestaDTO
+    ): Response<SimpleResponse>
+
     @POST("api/registros/cuidados")
     suspend fun postCuidado(
         @Header("Authorization") token: String,
         @Body body: RegistroCuidadoDTO
-    ): Response<Map<String, Any>>
+    ): Response<SimpleResponse>
 
     @POST("api/registros/constantes")
     suspend fun postConstantes(
         @Header("Authorization") token: String,
         @Body body: RegistroConstantesDTO
-    ): Response<Map<String, Any>>
+    ): Response<SimpleResponse>
 
     @GET("api/residentes/{id}/historial")
     suspend fun getHistorial(

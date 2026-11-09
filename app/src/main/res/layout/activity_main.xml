@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#ECEFF1">
 
-    <!-- Cabecera de Estado Selene -->
+    <!-- BARRA SUPERIOR SELENE -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -56,24 +56,23 @@
             android:id="@+id/tvUsuarioSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Usuario: L. Fernando (TCAE)"
+            android:text="Personal Sanitario (TCAE)"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!-- Área de Trabajo Dividida -->
+    <!-- CUERPO PRINCIPAL DIVIDIDO -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:orientation="horizontal">
 
-        <!-- Censo 30 camas -->
+        <!-- CENSO DE RESIDENTES (30 CAMAS) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.38"
+            android:layout_weight="0.32"
             android:orientation="vertical"
             android:background="#FFFFFF"
             android:padding="8dp">
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="4dp">
+                android:padding="6dp">
 
                 <TextView
                     android:id="@+id/tvTituloPlanta"
@@ -107,8 +106,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCenso"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <View
@@ -116,20 +114,21 @@
             android:layout_height="match_parent"
             android:background="#CFD8DC" />
 
-        <!-- Panel Clínico -->
+        <!-- ESTACIÓN CLÍNICA DEL RESIDENTE SELECCIONADO -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.62"
+            android:layout_weight="0.68"
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- Cabecera Residente -->
+            <!-- CABECERA RESALTADA Y ALARMAS VISUALES GRANDES -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="4dp"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="3dp"
                 app:strokeColor="#CFD8DC"
                 app:strokeWidth="1dp">
 
@@ -137,7 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                    android:padding="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -150,249 +149,431 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="#0B4F8A"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="4dp"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="6dp"
                             android:text="HAB: 101 - A"
                             android:textColor="#FFFFFF"
-                            android:textSize="15sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvCabeceraNombre"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="14dp"
                             android:layout_weight="1"
                             android:text="Seleccione un residente"
-                            android:textColor="#212121"
-                            android:textSize="17sp"
+                            android:textColor="#1A237E"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvCabeceraNHC"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NHC: -----"
-                            android:textColor="#546E7A"
-                            android:textSize="13sp" />
+                            android:text="NHC: 100001"
+                            android:textColor="#455A64"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- ALARMAS CLÍNICAS DESTACADAS -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginTop="12dp">
 
                         <TextView
                             android:id="@+id/chipAlergia"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:background="#FFCDD2"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="ALERGIAS: NKDA"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="8dp"
+                            android:text="⚠ ALERGIAS: PENICILINA"
                             android:textColor="#B71C1C"
-                            android:textSize="11sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/chipDieta"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
                             android:background="#C8E6C9"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="DIETA: Basal"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="8dp"
+                            android:text="🥗 DIETA: FÁCIL MASTICACIÓN"
                             android:textColor="#1B5E20"
-                            android:textSize="11sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/chipCaidas"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
                             android:background="#FFE082"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="R. CAÍDAS: MEDIO"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="8dp"
+                            android:text="🦽 R. CAÍDAS: ALTO"
                             android:textColor="#E65100"
-                            android:textSize="11sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Pestañas de Acción -->
+            <!-- PESTAÑAS DE TRABAJO CLÍNICO -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabsSecciones"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:background="#FFFFFF"
                 app:tabSelectedTextColor="#0B4F8A"
-                app:tabIndicatorColor="#0B4F8A">
-                <com.google.android.material.tabs.TabItem android:text="REGISTRO CUIDADOS" />
-                <com.google.android.material.tabs.TabItem android:text="CONSTANTES VITALES" />
-                <com.google.android.material.tabs.TabItem android:text="HISTORIAL / CRONOGRAMA" />
+                app:tabIndicatorColor="#0B4F8A"
+                app:tabMode="fixed">
+                <com.google.android.material.tabs.TabItem android:text="PAUTAS MEDICACIÓN" />
+                <com.google.android.material.tabs.TabItem android:text="ELIMINACIÓN / PAÑAL" />
+                <com.google.android.material.tabs.TabItem android:text="CONTROL INGESTAS" />
+                <com.google.android.material.tabs.TabItem android:text="CONSTANTES" />
+                <com.google.android.material.tabs.TabItem android:text="CRONOGRAMA" />
             </com.google.android.material.tabs.TabLayout>
 
-            <!-- Panel Cuidados Directos -->
+            <!-- PANEL 1: MEDICACIÓN -->
             <LinearLayout
-                android:id="@+id/panelCuidados"
+                android:id="@+id/panelMedicacion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="#FFFFFF"
-                android:padding="16dp"
+                android:padding="12dp"
                 android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cambio Postural / Movilización:"
+                    android:text="Fármacos Prescritos y Horarios de Administración:"
                     android:textStyle="bold"
-                    android:textColor="#212121" />
+                    android:textColor="#212121"
+                    android:textSize="14sp" />
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMedicacion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
-
-                    <Button
-                        android:id="@+id/btnDecubitoSupino"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Supino" />
-
-                    <Button
-                        android:id="@+id/btnDecubitoDcho"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Lat. Dcho" />
-
-                    <Button
-                        android:id="@+id/btnDecubitoIzq"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Lat. Izq" />
-
-                    <Button
-                        android:id="@+id/btnSillon"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Sillón" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Ingesta / Nutrición:"
-                    android:textStyle="bold"
-                    android:textColor="#212121" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
-
-                    <Button
-                        android:id="@+id/btnIngesta100"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Total (100%)" />
-
-                    <Button
-                        android:id="@+id/btnIngesta50"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Media (50%)" />
-
-                    <Button
-                        android:id="@+id/btnIngestaRechazo"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Rechaza (&lt;25%)" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Higiene y Control de Esfínteres:"
-                    android:textStyle="bold"
-                    android:textColor="#212121" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp">
-
-                    <Button
-                        android:id="@+id/btnAseoCompleto"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Aseo Completo" />
-
-                    <Button
-                        android:id="@+id/btnPanal"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Cambio Pañal" />
-
-                    <Button
-                        android:id="@+id/btnDeposicion"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:text="Deposición (+)" />
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="Observaciones de enfermería / incidencias del turno">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etObservacionesCuidados"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lines="2" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
 
-            <!-- Panel Constantes -->
+            <!-- PANEL 2: ELIMINACIÓN Y CAMBIO DE PAÑAL DETALLADO -->
+            <ScrollView
+                android:id="@+id/panelEliminacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de Registro:"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnElimDiuresis"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Solo Diuresis" />
+
+                        <Button
+                            android:id="@+id/btnElimDeposicion"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Solo Deposición" />
+
+                        <Button
+                            android:id="@+id/btnElimMixto"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Mixto (Ambos)" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Cantidad / Volumen estimado:"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnCantEscasa"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Escasa" />
+
+                        <Button
+                            android:id="@+id/btnCantNormal"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Moderada" />
+
+                        <Button
+                            android:id="@+id/btnCantAbundante"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Abundante" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Características clínicas / Escala Bristol:"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnCaracNormal"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Normal / Formada" />
+
+                        <Button
+                            android:id="@+id/btnCaracPastosa"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Blanda / Pastosa" />
+
+                        <Button
+                            android:id="@+id/btnCaracLiquida"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Líquida / Diarrea" />
+
+                        <Button
+                            android:id="@+id/btnCaracDura"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Dura / Caprina" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Incidencias (irritación, aspecto colúrico, hematuria, etc.)">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etObsEliminacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardarEliminacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="#0B4F8A"
+                        android:text="REGISTRAR ELIMINACIÓN EN HISTORIAL" />
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- PANEL 3: CONTROL DE INGESTAS -->
+            <ScrollView
+                android:id="@+id/panelIngestas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Toma / Servicio de Comida:"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnTomaDesayuno"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Desayuno" />
+
+                        <Button
+                            android:id="@+id/btnTomaComida"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Comida" />
+
+                        <Button
+                            android:id="@+id/btnTomaMerienda"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Merienda" />
+
+                        <Button
+                            android:id="@+id/btnTomaCena"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Cena" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Aceptación de la Ingesta:"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnIngestaBuena"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Buena (100%)" />
+
+                        <Button
+                            android:id="@+id/btnIngestaMedia"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Regular (50%)" />
+
+                        <Button
+                            android:id="@+id/btnIngestaEscasa"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Escasa (&lt;25%)" />
+
+                        <Button
+                            android:id="@+id/btnIngestaRechazoTotal"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Rechazo Total" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Líquidos ingeridos (ml)">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLiquidosMl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardarIngesta"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="#0B4F8A"
+                        android:text="REGISTRAR INGESTA EN HOJA NUTRICIONAL" />
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- PANEL 4: CONSTANTES VITALES -->
             <LinearLayout
                 android:id="@+id/panelConstantes"
                 android:layout_width="match_parent"
@@ -439,7 +620,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="10dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -486,13 +667,13 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGuardarConstantes"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="52dp"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="#0B4F8A"
-                    android:text="GUARDAR EN GRÁFICA CLÍNICA" />
+                    android:text="GUARDAR EN GRÁFICA VITAL" />
             </LinearLayout>
 
-            <!-- Panel Historial -->
+            <!-- PANEL 5: HISTORIAL Y CRONOGRAMA -->
             <LinearLayout
                 android:id="@+id/panelHistorial"
                 android:layout_width="match_parent"

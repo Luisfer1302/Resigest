@@ -1,19 +1,20 @@
 package com.example.resigest.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.resigest.data.api.ResiGestService
-import com.example.resigest.data.model.RegistroConstantesDTO
-import com.example.resigest.data.model.RegistroCuidadoDTO
-import com.example.resigest.data.model.ResidenteItem
+import com.example.resigest.data.model.*
 import com.example.resigest.databinding.ActivityMainBinding
 import com.example.resigest.ui.adapter.HistorialAdapter
+import com.example.resigest.ui.adapter.MedicacionAdapter
 import com.example.resigest.ui.adapter.ResidenteAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
@@ -22,12 +23,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val api = ResiGestService.create()
+
     private lateinit var adapterCenso: ResidenteAdapter
     private lateinit var adapterHistorial: HistorialAdapter
+    private lateinit var adapterMedicacion: MedicacionAdapter
 
     private var token: String = ""
     private var plantaActual: Int = 1
     private var residenteSeleccionado: ResidenteItem? = null
+
+    // Estados seleccionados para Eliminación
+    private var selTipoElim: String = "Solo Diuresis"
+    private var selCantElim: String = "Moderada"
+    private var selCaracElim: String = "Normal / Formada"
+
+    // Estados seleccionados para Ingestas
+    private var selTomaComida: String = "Comida"
+    private var selAceptacionIngesta: String = "Buena (100%)"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,14 +68,18 @@ class MainActivity : AppCompatActivity() {
         binding.rvHistorial.layoutManager = LinearLayoutManager(this)
         binding.rvHistorial.adapter = adapterHistorial
 
+        adapterMedicacion = MedicacionAdapter { med ->
+            administrarFarmaco(med)
+        }
+        binding.rvMedicacion.layoutManager = LinearLayoutManager(this)
+        binding.rvMedicacion.adapter = adapterMedicacion
+
         val isDark = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         binding.switchDarkMode.isChecked = isDark
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            AppCompatDelegate.setDefaultNightMode(
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            )
         }
     }
 
@@ -79,47 +95,56 @@ class MainActivity : AppCompatActivity() {
 
         binding.tabsSecciones.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        binding.panelCuidados.visibility = View.VISIBLE
-                        binding.panelConstantes.visibility = View.GONE
-                        binding.panelHistorial.visibility = View.GONE
-                    }
-                    1 -> {
-                        binding.panelCuidados.visibility = View.GONE
-                        binding.panelConstantes.visibility = View.VISIBLE
-                        binding.panelHistorial.visibility = View.GONE
-                    }
-                    2 -> {
-                        binding.panelCuidados.visibility = View.GONE
-                        binding.panelConstantes.visibility = View.GONE
-                        binding.panelHistorial.visibility = View.VISIBLE
-                        cargarHistorial()
-                    }
-                }
+                binding.panelMedicacion.visibility = if (tab?.position == 0) View.VISIBLE else View.GONE
+                binding.panelEliminacion.visibility = if (tab?.position == 1) View.VISIBLE else View.GONE
+                binding.panelIngestas.visibility = if (tab?.position == 2) View.VISIBLE else View.GONE
+                binding.panelConstantes.visibility = if (tab?.position == 3) View.VISIBLE else View.GONE
+                binding.panelHistorial.visibility = if (tab?.position == 4) View.VISIBLE else View.GONE
+
+                if (tab?.position == 0) cargarMedicacion()
+                if (tab?.position == 4) cargarHistorial()
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        // Cuidados posturales
-        binding.btnDecubitoSupino.setOnClickListener { registrarCuidadoDirecto(4, "Decúbito Supino") }
-        binding.btnDecubitoDcho.setOnClickListener { registrarCuidadoDirecto(5, "Decúbito Lateral Dcho") }
-        binding.btnDecubitoIzq.setOnClickListener { registrarCuidadoDirecto(6, "Decúbito Lateral Izq") }
-        binding.btnSillon.setOnClickListener { registrarCuidadoDirecto(7, "Sedestación en Sillón") }
+        // Selección de botones para eliminación
+        binding.btnElimDiuresis.setOnClickListener { highlightButton(binding.btnElimDiuresis, listOf(binding.btnElimDeposicion, binding.btnElimMixto)); selTipoElim = "Solo Diuresis" }
+        binding.btnElimDeposicion.setOnClickListener { highlightButton(binding.btnElimDeposicion, listOf(binding.btnElimDiuresis, binding.btnElimMixto)); selTipoElim = "Solo Deposición" }
+        binding.btnElimMixto.setOnClickListener { highlightButton(binding.btnElimMixto, listOf(binding.btnElimDiuresis, binding.btnElimDeposicion)); selTipoElim = "Mixto" }
 
-        // Ingestas
-        binding.btnIngesta100.setOnClickListener { registrarCuidadoDirecto(9, "Comida: 100%") }
-        binding.btnIngesta50.setOnClickListener { registrarCuidadoDirecto(9, "Comida: 50%") }
-        binding.btnIngestaRechazo.setOnClickListener { registrarCuidadoDirecto(9, "Comida: Rechazo (<25%)") }
+        binding.btnCantEscasa.setOnClickListener { highlightButton(binding.btnCantEscasa, listOf(binding.btnCantNormal, binding.btnCantAbundante)); selCantElim = "Escasa" }
+        binding.btnCantNormal.setOnClickListener { highlightButton(binding.btnCantNormal, listOf(binding.btnCantEscasa, binding.btnCantAbundante)); selCantElim = "Moderada" }
+        binding.btnCantAbundante.setOnClickListener { highlightButton(binding.btnCantAbundante, listOf(binding.btnCantEscasa, binding.btnCantNormal)); selCantElim = "Abundante" }
 
-        // Higiene y eliminación
-        binding.btnAseoCompleto.setOnClickListener { registrarCuidadoDirecto(1, "Aseo Completo") }
-        binding.btnPanal.setOnClickListener { registrarCuidadoDirecto(3, "Cambio de Pañal") }
-        binding.btnDeposicion.setOnClickListener { registrarCuidadoDirecto(13, "Deposición (+)") }
+        binding.btnCaracNormal.setOnClickListener { highlightButton(binding.btnCaracNormal, listOf(binding.btnCaracPastosa, binding.btnCaracLiquida, binding.btnCaracDura)); selCaracElim = "Normal / Formada" }
+        binding.btnCaracPastosa.setOnClickListener { highlightButton(binding.btnCaracPastosa, listOf(binding.btnCaracNormal, binding.btnCaracLiquida, binding.btnCaracDura)); selCaracElim = "Blanda / Pastosa" }
+        binding.btnCaracLiquida.setOnClickListener { highlightButton(binding.btnCaracLiquida, listOf(binding.btnCaracNormal, binding.btnCaracPastosa, binding.btnCaracDura)); selCaracElim = "Líquida / Diarrea" }
+        binding.btnCaracDura.setOnClickListener { highlightButton(binding.btnCaracDura, listOf(binding.btnCaracNormal, binding.btnCaracPastosa, binding.btnCaracLiquida)); selCaracElim = "Dura / Caprina" }
 
-        binding.btnGuardarConstantes.setOnClickListener {
-            guardarConstantes()
+        binding.btnGuardarEliminacion.setOnClickListener { guardarEliminacion() }
+
+        // Selección de botones para ingestas
+        binding.btnTomaDesayuno.setOnClickListener { highlightButton(binding.btnTomaDesayuno, listOf(binding.btnTomaComida, binding.btnTomaMerienda, binding.btnTomaCena)); selTomaComida = "Desayuno" }
+        binding.btnTomaComida.setOnClickListener { highlightButton(binding.btnTomaComida, listOf(binding.btnTomaDesayuno, binding.btnTomaMerienda, binding.btnTomaCena)); selTomaComida = "Comida" }
+        binding.btnTomaMerienda.setOnClickListener { highlightButton(binding.btnTomaMerienda, listOf(binding.btnTomaDesayuno, binding.btnTomaComida, binding.btnTomaCena)); selTomaComida = "Merienda" }
+        binding.btnTomaCena.setOnClickListener { highlightButton(binding.btnTomaCena, listOf(binding.btnTomaDesayuno, binding.btnTomaComida, binding.btnTomaMerienda)); selTomaComida = "Cena" }
+
+        binding.btnIngestaBuena.setOnClickListener { highlightButton(binding.btnIngestaBuena, listOf(binding.btnIngestaMedia, binding.btnIngestaEscasa, binding.btnIngestaRechazoTotal)); selAceptacionIngesta = "Buena (100%)" }
+        binding.btnIngestaMedia.setOnClickListener { highlightButton(binding.btnIngestaMedia, listOf(binding.btnIngestaBuena, binding.btnIngestaEscasa, binding.btnIngestaRechazoTotal)); selAceptacionIngesta = "Regular (50%)" }
+        binding.btnIngestaEscasa.setOnClickListener { highlightButton(binding.btnIngestaEscasa, listOf(binding.btnIngestaBuena, binding.btnIngestaMedia, binding.btnIngestaRechazoTotal)); selAceptacionIngesta = "Escasa (<25%)" }
+        binding.btnIngestaRechazoTotal.setOnClickListener { highlightButton(binding.btnIngestaRechazoTotal, listOf(binding.btnIngestaBuena, binding.btnIngestaMedia, binding.btnIngestaEscasa)); selAceptacionIngesta = "Rechazo Total" }
+
+        binding.btnGuardarIngesta.setOnClickListener { guardarIngesta() }
+        binding.btnGuardarConstantes.setOnClickListener { guardarConstantes() }
+    }
+
+    private fun highlightButton(selected: Button, others: List<Button>) {
+        selected.setBackgroundColor(Color.parseColor("#0B4F8A"))
+        selected.setTextColor(Color.WHITE)
+        others.forEach {
+            it.setBackgroundColor(Color.TRANSPARENT)
+            it.setTextColor(Color.parseColor("#0B4F8A"))
         }
     }
 
@@ -145,34 +170,93 @@ class MainActivity : AppCompatActivity() {
         binding.tvCabeceraNombre.text = "${res.apellidos}, ${res.nombre}"
         binding.tvCabeceraNHC.text = "NHC: ${res.nhc}"
 
-        binding.chipAlergia.text = "ALERGIAS: ${res.alergias}"
-        binding.chipDieta.text = "DIETA: ${res.dieta}"
-        binding.chipCaidas.text = "R. CAÍDAS: ${res.riesgo_caidas}"
+        // Alertas de alta visibilidad
+        binding.chipAlergia.text = "⚠ ALERGIAS: ${res.alergias.uppercase()}"
+        binding.chipDieta.text = "🥗 DIETA: ${res.dieta.uppercase()}"
+        binding.chipCaidas.text = "🦽 R. CAÍDAS: ${res.riesgo_caidas.uppercase()}"
 
+        cargarMedicacion()
         if (binding.panelHistorial.visibility == View.VISIBLE) {
             cargarHistorial()
         }
     }
 
-    private fun registrarCuidadoDirecto(tipoId: Int, valor: String) {
+    private fun cargarMedicacion() {
         val res = residenteSeleccionado ?: return
-        val obs = binding.etObservacionesCuidados.text.toString().trim()
-
         lifecycleScope.launch {
             try {
-                val dto = RegistroCuidadoDTO(
+                val resp = api.getMedicacion(token, res.id)
+                if (resp.isSuccessful && resp.body() != null) {
+                    adapterMedicacion.setData(resp.body()!!)
+                }
+            } catch (_: Exception) {}
+        }
+    }
+
+    private fun administrarFarmaco(med: MedicacionItem) {
+        val res = residenteSeleccionado ?: return
+        lifecycleScope.launch {
+            try {
+                val dto = RegistroMedicacionDTO(
+                    pauta_id = med.id,
                     residente_id = res.id,
-                    tipo_cuidado_id = tipoId,
-                    valor_resultado = valor,
-                    observaciones = if (obs.isNotEmpty()) obs else null
+                    estado = "ADMINISTRADO"
                 )
-                val resp = api.postCuidado(token, dto)
+                val resp = api.postAdministrarMedicacion(token, dto)
                 if (resp.isSuccessful) {
-                    Toast.makeText(this@MainActivity, "✓ $valor anotado en hoja", Toast.LENGTH_SHORT).show()
-                    binding.etObservacionesCuidados.text?.clear()
+                    Toast.makeText(this@MainActivity, "✓ ${med.farmaco} administrado y firmado", Toast.LENGTH_SHORT).show()
+                    cargarMedicacion()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun guardarEliminacion() {
+        val res = residenteSeleccionado ?: return
+        val obs = binding.etObsEliminacion.text.toString().trim()
+
+        lifecycleScope.launch {
+            try {
+                val dto = RegistroEliminacionDTO(
+                    residente_id = res.id,
+                    tipo = selTipoElim,
+                    volumen_cantidad = selCantElim,
+                    caracteristicas = selCaracElim,
+                    observaciones = if (obs.isNotEmpty()) obs else null
+                )
+                val resp = api.postEliminacion(token, dto)
+                if (resp.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "✓ Eliminación registrada en hoja clínica", Toast.LENGTH_SHORT).show()
+                    binding.etObsEliminacion.text?.clear()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error al registrar eliminación: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun guardarIngesta() {
+        val res = residenteSeleccionado ?: return
+        val liquidos = binding.etLiquidosMl.text.toString().toIntOrNull()
+
+        lifecycleScope.launch {
+            try {
+                val dto = RegistroIngestaDTO(
+                    residente_id = res.id,
+                    comida = selTomaComida,
+                    valoracion = selAceptacionIngesta,
+                    liquidos_ml = liquidos,
+                    observaciones = null
+                )
+                val resp = api.postIngesta(token, dto)
+                if (resp.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "✓ Ingesta de $selTomaComida anotada", Toast.LENGTH_SHORT).show()
+                    binding.etLiquidosMl.text?.clear()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error en ingesta: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -200,7 +284,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 val resp = api.postConstantes(token, dto)
                 if (resp.isSuccessful) {
-                    Toast.makeText(this@MainActivity, "Constantes registradas con éxito", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Constantes guardadas correctamente", Toast.LENGTH_SHORT).show()
                     binding.etTASistolica.text?.clear()
                     binding.etTADiastolica.text?.clear()
                     binding.etFC.text?.clear()
@@ -221,7 +305,7 @@ class MainActivity : AppCompatActivity() {
                 if (resp.isSuccessful && resp.body() != null) {
                     adapterHistorial.setData(resp.body()!!)
                 }
-            } catch (_: Exception) { }
+            } catch (_: Exception) {}
         }
     }
 }
