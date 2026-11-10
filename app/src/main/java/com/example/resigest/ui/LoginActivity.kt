@@ -58,7 +58,9 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_LONG).show()
+                    val codigoHttp = resp.code()
+                    val errorCuerpo = resp.errorBody()?.string() ?: "Sin cuerpo de error"
+                    Toast.makeText(this@LoginActivity, "Error $codigoHttp: $errorCuerpo", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 binding.pbCargando.visibility = View.GONE

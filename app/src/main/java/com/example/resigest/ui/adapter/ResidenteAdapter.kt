@@ -37,32 +37,44 @@ class ResidenteAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ResidenteViewHolder(private val binding: ItemResidenteCamaBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ResidenteViewHolder(val binding: ItemResidenteCamaBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(res: ResidenteItem, isSelected: Boolean) {
-            binding.tvItemCama.text = "${res.habitacion}-${res.cama}"
-            binding.tvItemNombre.text = "${res.apellidos}, ${res.nombre}"
-            binding.tvItemDetalle.text = "${res.nhc} | Dieta: ${res.dieta}"
+        fun bind(residente: ResidenteItem, isSelected: Boolean) {
+            // Mapeo con los IDs exactos de item_residente_cama.xml
+            binding.tvItemCama.text = "${residente.habitacion}-${residente.cama}"
+            binding.tvItemNombre.text = "${residente.apellidos}, ${residente.nombre}"
+            binding.tvItemDetalle.text = "NHC: ${residente.nhc} | Dieta: ${residente.dieta}"
 
-            binding.viewAlerta.visibility = if (res.aislamiento != "NINGUNO" || res.riesgo_caidas == "ALTO") {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            // Alerta roja: ÚNICA Y EXCLUSIVAMENTE para pacientes con alergias reales registradas
+            val alergiasTexto = residente.alergias?.trim() ?: ""
+            val tieneAlergia = alergiasTexto.isNotBlank() &&
+                    !alergiasTexto.equals("Ninguna", ignoreCase = true) &&
+                    !alergiasTexto.equals("Sin alergias", ignoreCase = true) &&
+                    !alergiasTexto.equals("Sin alergias conocidas", ignoreCase = true) &&
+                    !alergiasTexto.equals("No constan", ignoreCase = true)
 
+            binding.viewAlerta.visibility = if (tieneAlergia) View.VISIBLE else View.GONE
+
+            // Resaltado visual de la tarjeta seleccionada en el censo
             if (isSelected) {
-                binding.cardCama.setCardBackgroundColor(Color.parseColor("#FFF9C4"))
+                binding.cardCama.strokeColor = Color.parseColor("#0B4F8A")
+                binding.cardCama.strokeWidth = 4
+                binding.cardCama.setCardBackgroundColor(Color.parseColor("#E3F2FD"))
             } else {
+                binding.cardCama.strokeColor = Color.parseColor("#CFD8DC")
+                binding.cardCama.strokeWidth = 2
                 binding.cardCama.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
             }
 
             binding.root.setOnClickListener {
-                val prev = selectedIndex
-                selectedIndex = adapterPosition
-                notifyItemChanged(prev)
-                notifyItemChanged(selectedIndex)
-                onResidenteSelected(res)
+                val anterior = selectedIndex
+                val posActual = adapterPosition
+                if (posActual != RecyclerView.NO_POSITION) {
+                    selectedIndex = posActual
+                    notifyItemChanged(anterior)
+                    notifyItemChanged(selectedIndex)
+                    onResidenteSelected(residente)
+                }
             }
         }
     }

@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ECEFF1">
+    android:background="@color/bg_app">
 
-    <!-- BARRA SUPERIOR SELENE -->
+    <!-- BARRA SUPERIOR ESTILO SELENE -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:background="#0B4F8A"
+        android:background="@color/selene_blue"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
         android:orientation="horizontal">
@@ -62,19 +62,19 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!-- CUERPO PRINCIPAL DIVIDIDO -->
+    <!-- CUERPO PRINCIPAL DIVIDIDO EN 2 COLUMNAS -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <!-- CENSO DE RESIDENTES (30 CAMAS) -->
+        <!-- COLUMNA IZQUIERDA: CENSO DE RESIDENTES (30 CAMAS) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.32"
             android:orientation="vertical"
-            android:background="#FFFFFF"
+            android:background="@color/bg_surface"
             android:padding="8dp">
 
             <LinearLayout
@@ -91,7 +91,7 @@
                     android:layout_weight="1"
                     android:text="Censo - Planta 1 (30 Pacientes)"
                     android:textStyle="bold"
-                    android:textColor="#212121"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <TextView
@@ -109,12 +109,13 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
+        <!-- SEPARADOR VERTICAL -->
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#CFD8DC" />
+            android:background="@color/table_border" />
 
-        <!-- ESTACIÓN CLÍNICA DEL RESIDENTE SELECCIONADO -->
+        <!-- COLUMNA DERECHA: ESTACIÓN CLÍNICA DEL RESIDENTE SELECCIONADO -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -122,14 +123,14 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- CABECERA RESALTADA Y ALARMAS VISUALES GRANDES -->
+            <!-- CABECERA RESALTADA: DATOS DEL PACIENTE Y ALERTAS ASISTENCIALES -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@color/bg_surface"
                 app:cardCornerRadius="6dp"
                 app:cardElevation="3dp"
-                app:strokeColor="#CFD8DC"
+                app:strokeColor="@color/table_border"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -148,7 +149,7 @@
                             android:id="@+id/tvCabeceraCama"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#0B4F8A"
+                            android:background="@color/selene_blue"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="6dp"
                             android:text="HAB: 101 - A"
@@ -163,7 +164,7 @@
                             android:layout_marginStart="14dp"
                             android:layout_weight="1"
                             android:text="Seleccione un residente"
-                            android:textColor="#1A237E"
+                            android:textColor="@color/selene_blue"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -172,12 +173,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="NHC: 100001"
-                            android:textColor="#455A64"
+                            android:textColor="@color/text_secondary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- ALARMAS CLÍNICAS DESTACADAS -->
+                    <!-- ALARMAS CLÍNICAS VISUALES GRANDES -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -194,7 +195,7 @@
                             android:paddingVertical="8dp"
                             android:text="⚠ ALERGIAS: PENICILINA"
                             android:textColor="#B71C1C"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -208,7 +209,7 @@
                             android:paddingVertical="8dp"
                             android:text="🥗 DIETA: FÁCIL MASTICACIÓN"
                             android:textColor="#1B5E20"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -222,21 +223,22 @@
                             android:paddingVertical="8dp"
                             android:text="🦽 R. CAÍDAS: ALTO"
                             android:textColor="#E65100"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- PESTAÑAS DE TRABAJO CLÍNICO -->
+            <!-- BARRA DE PESTAÑAS DE TRABAJO ASISTENCIAL -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabsSecciones"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                app:tabSelectedTextColor="#0B4F8A"
-                app:tabIndicatorColor="#0B4F8A"
+                android:background="@color/bg_surface"
+                app:tabSelectedTextColor="@color/selene_blue"
+                app:tabIndicatorColor="@color/selene_blue"
+                app:tabTextColor="@color/text_secondary"
                 app:tabMode="fixed">
                 <com.google.android.material.tabs.TabItem android:text="PAUTAS MEDICACIÓN" />
                 <com.google.android.material.tabs.TabItem android:text="ELIMINACIÓN / PAÑAL" />
@@ -245,37 +247,105 @@
                 <com.google.android.material.tabs.TabItem android:text="CRONOGRAMA" />
             </com.google.android.material.tabs.TabLayout>
 
-            <!-- PANEL 1: MEDICACIÓN -->
+            <!-- 1. PANEL: SÁBANA HORARIA DE MEDICACIÓN ESTILO SELENE -->
             <LinearLayout
                 android:id="@+id/panelMedicacion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:padding="12dp"
+                android:background="@color/bg_surface"
+                android:padding="8dp"
                 android:visibility="visible">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fármacos Prescritos y Horarios de Administración:"
-                    android:textStyle="bold"
-                    android:textColor="#212121"
-                    android:textSize="14sp" />
+                <!-- CABECERA HORARIA DE LA TABLA DE ADMINISTRACIÓN -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@color/selene_blue"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:text="Pauta Farmacológica (Oral / Otras)"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="DESAYUNO\n09:00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="COMIDA\n14:00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:text="MERIENDA\n17:00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:text="CENA\n21:00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:text="NOCHE\n00:00"
+                            android:textColor="#FFFFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMedicacion"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp" />
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
-            <!-- PANEL 2: ELIMINACIÓN Y CAMBIO DE PAÑAL DETALLADO -->
+            <!-- 2. PANEL: ELIMINACIÓN Y CAMBIO DE PAÑAL DETALLADO -->
             <ScrollView
                 android:id="@+id/panelEliminacion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
+                android:background="@color/bg_surface"
                 android:padding="16dp"
                 android:visibility="gone">
 
@@ -289,7 +359,7 @@
                         android:layout_height="wrap_content"
                         android:text="Tipo de Registro:"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/text_primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -330,7 +400,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Cantidad / Volumen estimado:"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/text_primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -371,7 +441,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Características clínicas / Escala Bristol:"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/text_primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -385,7 +455,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Normal / Formada" />
+                            android:text="Normal" />
 
                         <Button
                             android:id="@+id/btnCaracPastosa"
@@ -394,7 +464,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Blanda / Pastosa" />
+                            android:text="Pastosa" />
 
                         <Button
                             android:id="@+id/btnCaracLiquida"
@@ -403,7 +473,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Líquida / Diarrea" />
+                            android:text="Líquida" />
 
                         <Button
                             android:id="@+id/btnCaracDura"
@@ -412,7 +482,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Dura / Caprina" />
+                            android:text="Dura" />
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -424,7 +494,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etObsEliminacion"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -432,17 +503,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginTop="14dp"
-                        android:backgroundTint="#0B4F8A"
+                        android:backgroundTint="@color/selene_blue"
                         android:text="REGISTRAR ELIMINACIÓN EN HISTORIAL" />
                 </LinearLayout>
             </ScrollView>
 
-            <!-- PANEL 3: CONTROL DE INGESTAS -->
+            <!-- 3. PANEL: CONTROL DE INGESTAS -->
             <ScrollView
                 android:id="@+id/panelIngestas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"
+                android:background="@color/bg_surface"
                 android:padding="16dp"
                 android:visibility="gone">
 
@@ -456,7 +527,7 @@
                         android:layout_height="wrap_content"
                         android:text="Toma / Servicio de Comida:"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/text_primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -506,7 +577,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Aceptación de la Ingesta:"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/text_primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -520,7 +591,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Buena (100%)" />
+                            android:text="100%" />
 
                         <Button
                             android:id="@+id/btnIngestaMedia"
@@ -529,7 +600,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Regular (50%)" />
+                            android:text="50%" />
 
                         <Button
                             android:id="@+id/btnIngestaEscasa"
@@ -538,7 +609,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Escasa (&lt;25%)" />
+                            android:text="&lt;25%" />
 
                         <Button
                             android:id="@+id/btnIngestaRechazoTotal"
@@ -547,7 +618,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="4dp"
-                            android:text="Rechazo Total" />
+                            android:text="Rechazo" />
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -560,7 +631,8 @@
                             android:id="@+id/etLiquidosMl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -568,18 +640,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginTop="14dp"
-                        android:backgroundTint="#0B4F8A"
+                        android:backgroundTint="@color/selene_blue"
                         android:text="REGISTRAR INGESTA EN HOJA NUTRICIONAL" />
                 </LinearLayout>
             </ScrollView>
 
-            <!-- PANEL 4: CONSTANTES VITALES -->
+            <!-- 4. PANEL: CONSTANTES VITALES -->
             <LinearLayout
                 android:id="@+id/panelConstantes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#FFFFFF"
+                android:background="@color/bg_surface"
                 android:padding="16dp"
                 android:visibility="gone">
 
@@ -598,7 +670,8 @@
                             android:id="@+id/etTASistolica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -612,7 +685,8 @@
                             android:id="@+id/etTADiastolica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -632,7 +706,8 @@
                             android:id="@+id/etFC"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -646,7 +721,8 @@
                             android:id="@+id/etSatO2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -660,7 +736,8 @@
                             android:id="@+id/etTemperatura"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/text_primary" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -669,17 +746,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginTop="16dp"
-                    android:backgroundTint="#0B4F8A"
+                    android:backgroundTint="@color/selene_blue"
                     android:text="GUARDAR EN GRÁFICA VITAL" />
             </LinearLayout>
 
-            <!-- PANEL 5: HISTORIAL Y CRONOGRAMA -->
+            <!-- 5. PANEL: CRONOGRAMA ASISTENCIAL -->
             <LinearLayout
                 android:id="@+id/panelHistorial"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#FFFFFF"
+                android:background="@color/bg_surface"
                 android:padding="8dp"
                 android:visibility="gone">
 

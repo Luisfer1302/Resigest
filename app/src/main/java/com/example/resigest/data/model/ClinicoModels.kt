@@ -25,9 +25,25 @@ data class MedicacionItem(
     val farmaco: String,
     val dosis: String,
     val via: String,
-    val horario: String,
     val observaciones: String?,
-    var administrado: Boolean = false
+    // Tomas pautadas (true = pautada en ese horario)
+    val pauta_desayuno: Boolean = true,
+    val pauta_comida: Boolean = false,
+    val pauta_merienda: Boolean = false,
+    val pauta_cena: Boolean = false,
+    val pauta_noche: Boolean = false,
+    // Estado de firma en el turno
+    var firmado_desayuno: Boolean = false,
+    var firmado_comida: Boolean = false,
+    var firmado_merienda: Boolean = false,
+    var firmado_cena: Boolean = false,
+    var firmado_noche: Boolean = false
+)
+
+data class FirmaTomaDTO(
+    val pauta_id: Int,
+    val residente_id: Int,
+    val toma: String // "DES", "COM", "MER", "CEN", "NOC"
 )
 
 data class RegistroMedicacionDTO(
@@ -77,9 +93,9 @@ data class HistorialItem(
     val fecha_hora: String,
     val tipo_registro: String,
     val titulo: String,
-    val resultado: String,
+    val resultado: String?,
     val observaciones: String?,
-    val profesional: String
+    val profesional: String?
 )
 
 data class SimpleResponse(

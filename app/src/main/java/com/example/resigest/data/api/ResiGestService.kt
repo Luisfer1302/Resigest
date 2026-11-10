@@ -11,6 +11,7 @@ import com.example.resigest.data.model.RegistroIngestaDTO
 import com.example.resigest.data.model.RegistroMedicacionDTO
 import com.example.resigest.data.model.ResidenteItem
 import com.example.resigest.data.model.SimpleResponse
+import com.example.resigest.data.model.FirmaTomaDTO
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -45,6 +46,12 @@ interface ResiGestService {
     suspend fun postAdministrarMedicacion(
         @Header("Authorization") token: String,
         @Body body: RegistroMedicacionDTO
+    ): Response<SimpleResponse>
+
+    @POST("api/registros/medicacion/firmar")
+    suspend fun postFirmarToma(
+        @Header("Authorization") token: String,
+        @Body body: FirmaTomaDTO
     ): Response<SimpleResponse>
 
     @POST("api/registros/eliminacion")

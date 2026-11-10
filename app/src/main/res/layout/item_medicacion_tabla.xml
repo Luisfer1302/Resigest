@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:background="@color/bg_surface"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="8dp">
+
+    <!-- COLUMNA FÁRMACO + VÍA + DOSIS -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:id="@+id/tvNombreFarmaco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paracetamol 1g"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/tvViaDosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vía Oral • Si dolor"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <!-- COLUMNAS HORARIAS INTERACTIVAS (ESTILO TABLA TRANSPARENTE SELENE) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- DESAYUNO (09:00) -->
+        <FrameLayout
+            android:id="@+id/cellDesayuno"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@color/slot_pending">
+            <TextView
+                android:id="@+id/txtDesayuno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="09:00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </FrameLayout>
+
+        <!-- COMIDA (14:00) -->
+        <FrameLayout
+            android:id="@+id/cellComida"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@color/slot_pending">
+            <TextView
+                android:id="@+id/txtComida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="14:00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </FrameLayout>
+
+        <!-- MERIENDA (17:00) -->
+        <FrameLayout
+            android:id="@+id/cellMerienda"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@color/slot_pending">
+            <TextView
+                android:id="@+id/txtMerienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="17:00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </FrameLayout>
+
+        <!-- CENA (21:00) -->
+        <FrameLayout
+            android:id="@+id/cellCena"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@color/slot_pending">
+            <TextView
+                android:id="@+id/txtCena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="21:00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </FrameLayout>
+
+        <!-- NOCHE (00:00) -->
+        <FrameLayout
+            android:id="@+id/cellNoche"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@color/slot_pending">
+            <TextView
+                android:id="@+id/txtNoche"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="00:00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

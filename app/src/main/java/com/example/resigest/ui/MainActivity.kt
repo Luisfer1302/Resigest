@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvHistorial.layoutManager = LinearLayoutManager(this)
         binding.rvHistorial.adapter = adapterHistorial
 
-        adapterMedicacion = MedicacionAdapter { med ->
-            administrarFarmaco(med)
+        adapterMedicacion = MedicacionAdapter { med, toma ->
+            firmarTomaHoraria(med, toma)
         }
         binding.rvMedicacion.layoutManager = LinearLayoutManager(this)
         binding.rvMedicacion.adapter = adapterMedicacion
@@ -80,6 +80,13 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
+            binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+                delegate.localNightMode = if (isChecked) {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                }
+            }
         }
     }
 
@@ -188,8 +195,13 @@ class MainActivity : AppCompatActivity() {
                 val resp = api.getMedicacion(token, res.id)
                 if (resp.isSuccessful && resp.body() != null) {
                     adapterMedicacion.setData(resp.body()!!)
+                } else {
+                    Toast.makeText(this@MainActivity, "Error servidor: ${resp.code()}", Toast.LENGTH_SHORT).show()
                 }
-            } catch (_: Exception) {}
+            } catch (e: Exception) {
+                // Ahora si hay un fallo de lectura, la tablet te lo dirá en pantalla en vez de quedarse vacía
+                Toast.makeText(this@MainActivity, "Fallo al leer pautas: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -230,6 +242,7 @@ class MainActivity : AppCompatActivity() {
                 if (resp.isSuccessful) {
                     Toast.makeText(this@MainActivity, "✓ Eliminación registrada en hoja clínica", Toast.LENGTH_SHORT).show()
                     binding.etObsEliminacion.text?.clear()
+                    cargarHistorial()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, "Error al registrar eliminación: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -254,6 +267,7 @@ class MainActivity : AppCompatActivity() {
                 if (resp.isSuccessful) {
                     Toast.makeText(this@MainActivity, "✓ Ingesta de $selTomaComida anotada", Toast.LENGTH_SHORT).show()
                     binding.etLiquidosMl.text?.clear()
+                    cargarHistorial()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, "Error en ingesta: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -290,6 +304,7 @@ class MainActivity : AppCompatActivity() {
                     binding.etFC.text?.clear()
                     binding.etSatO2.text?.clear()
                     binding.etTemperatura.text?.clear()
+                    cargarHistorial()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@MainActivity, "Error en constantes: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -306,6 +321,31 @@ class MainActivity : AppCompatActivity() {
                     adapterHistorial.setData(resp.body()!!)
                 }
             } catch (_: Exception) {}
+        }
+    }
+
+    private fun firmarTomaHoraria(med: MedicacionItem, toma: String) {
+        val res = residenteSeleccionado ?: return
+        lifecycleScope.launch {
+            try {
+                val dto = FirmaTomaDTO(
+                    pauta_id = med.id,
+                    residente_id = res.id,
+                    toma = toma
+                )
+                val resp = api.postFirmarToma(token, dto)
+                if (resp.isSuccessful) {
+                    val respuestaTexto = resp.body()?.mensaje ?: "Operación completada"
+                    Toast.makeText(this@MainActivity, "✓ $respuestaTexto", Toast.LENGTH_SHORT).show()
+
+                    // RECARGAR la sábana para que el cuadrado cambie a verde (firmado) o gris (anulado)
+                    cargarMedicacion()
+                } else {
+                    Toast.makeText(this@MainActivity, "No se pudo actualizar la toma", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

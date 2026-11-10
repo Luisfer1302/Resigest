@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="selene_blue">#0B4F8A</color>
+    <color name="selene_blue_light">#E3F2FD</color>
+    <color name="bg_app">#ECEFF1</color>
+    <color name="bg_surface">#FFFFFF</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#546E7A</color>
+    <color name="table_border">#CFD8DC</color>
+    <color name="slot_pending">#F5F5F5</color>
+    <color name="slot_signed">#2E7D32</color>
 </resources>
