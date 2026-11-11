@@ -44,7 +44,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- DESAYUNO (09:00) -->
+        <!-- DESAYUNO -->
         <FrameLayout
             android:id="@+id/cellDesayuno"
             android:layout_width="0dp"
@@ -63,7 +63,7 @@
                 android:textColor="@color/text_primary" />
         </FrameLayout>
 
-        <!-- COMIDA (14:00) -->
+        <!-- COMIDA -->
         <FrameLayout
             android:id="@+id/cellComida"
             android:layout_width="0dp"
@@ -82,7 +82,7 @@
                 android:textColor="@color/text_primary" />
         </FrameLayout>
 
-        <!-- MERIENDA (17:00) -->
+        <!-- MERIENDA -->
         <FrameLayout
             android:id="@+id/cellMerienda"
             android:layout_width="0dp"
@@ -101,7 +101,7 @@
                 android:textColor="@color/text_primary" />
         </FrameLayout>
 
-        <!-- CENA (21:00) -->
+        <!-- CENA -->
         <FrameLayout
             android:id="@+id/cellCena"
             android:layout_width="0dp"
@@ -120,7 +120,7 @@
                 android:textColor="@color/text_primary" />
         </FrameLayout>
 
-        <!-- NOCHE (00:00) -->
+        <!-- NOCHE -->
         <FrameLayout
             android:id="@+id/cellNoche"
             android:layout_width="0dp"

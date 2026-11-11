@@ -25,10 +25,10 @@ class HistorialAdapter : RecyclerView.Adapter<HistorialAdapter.HistorialViewHold
     override fun onBindViewHolder(holder: HistorialViewHolder, position: Int) {
         val item = lista[position]
 
-        // 1. Limpiamos la fecha que viene de MySQL (ej: 2026-11-09T10:30:00.000Z -> 2026-11-09 10:30:00)
+        // 1. Limpiamos la fecha que viene de MySQL
         val fechaLimpia = item.fecha_hora.replace("T", " ").substringBeforeLast(".")
 
-        // 2. Asignamos textos de forma segura manejando posibles nulos del LEFT JOIN
+        // 2. Asignamos textos
         holder.binding.tvHistorialTipo.text = item.tipo_registro
         holder.binding.tvHistorialFecha.text = fechaLimpia
         holder.binding.tvHistorialProfesional.text = item.profesional ?: "Personal Sanitario"

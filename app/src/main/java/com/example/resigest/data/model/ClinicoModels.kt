@@ -26,7 +26,7 @@ data class MedicacionItem(
     val dosis: String,
     val via: String,
     val observaciones: String?,
-    // Tomas pautadas (true = pautada en ese horario)
+    // Tomas pautadas
     val pauta_desayuno: Boolean = true,
     val pauta_comida: Boolean = false,
     val pauta_merienda: Boolean = false,
@@ -43,7 +43,8 @@ data class MedicacionItem(
 data class FirmaTomaDTO(
     val pauta_id: Int,
     val residente_id: Int,
-    val toma: String // "DES", "COM", "MER", "CEN", "NOC"
+    val toma: String,
+    val fecha: String? = null
 )
 
 data class RegistroMedicacionDTO(
@@ -55,16 +56,16 @@ data class RegistroMedicacionDTO(
 
 data class RegistroEliminacionDTO(
     val residente_id: Int,
-    val tipo: String,             // "Solo Diuresis", "Solo Deposición", "Mixto"
-    val volumen_cantidad: String, // "Escasa", "Moderada", "Abundante"
-    val caracteristicas: String,  // Bristol / Color
+    val tipo: String,
+    val volumen_cantidad: String,
+    val caracteristicas: String,
     val observaciones: String?
 )
 
 data class RegistroIngestaDTO(
     val residente_id: Int,
-    val comida: String,           // "Desayuno", "Comida", "Merienda", "Cena"
-    val valoracion: String,       // "Buena (100%)", "Regular (50%)", "Escasa (<25%)", "Rechazo Total"
+    val comida: String,
+    val valoracion: String,
     val liquidos_ml: Int?,
     val observaciones: String?
 )

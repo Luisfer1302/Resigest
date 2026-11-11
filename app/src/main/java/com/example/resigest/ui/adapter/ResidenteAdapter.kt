@@ -40,12 +40,11 @@ class ResidenteAdapter(
     inner class ResidenteViewHolder(val binding: ItemResidenteCamaBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(residente: ResidenteItem, isSelected: Boolean) {
-            // Mapeo con los IDs exactos de item_residente_cama.xml
             binding.tvItemCama.text = "${residente.habitacion}-${residente.cama}"
             binding.tvItemNombre.text = "${residente.apellidos}, ${residente.nombre}"
             binding.tvItemDetalle.text = "NHC: ${residente.nhc} | Dieta: ${residente.dieta}"
 
-            // Alerta roja: ÚNICA Y EXCLUSIVAMENTE para pacientes con alergias reales registradas
+            // Alerta roja: para pacientes con alergias registradas
             val alergiasTexto = residente.alergias?.trim() ?: ""
             val tieneAlergia = alergiasTexto.isNotBlank() &&
                     !alergiasTexto.equals("Ninguna", ignoreCase = true) &&
@@ -55,7 +54,6 @@ class ResidenteAdapter(
 
             binding.viewAlerta.visibility = if (tieneAlergia) View.VISIBLE else View.GONE
 
-            // Resaltado visual de la tarjeta seleccionada en el censo
             if (isSelected) {
                 binding.cardCama.strokeColor = Color.parseColor("#0B4F8A")
                 binding.cardCama.strokeWidth = 4

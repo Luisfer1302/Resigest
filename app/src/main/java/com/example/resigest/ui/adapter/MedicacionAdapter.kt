@@ -32,7 +32,6 @@ class MedicacionAdapter(
         holder.binding.tvNombreFarmaco.text = "${med.farmaco} ${med.dosis}"
         holder.binding.tvViaDosis.text = "Vía ${med.via}\n${med.observaciones ?: "Pautado"}"
 
-        // Ahora solo pasamos el evento de clic al MainActivity, sin forzar booleanos
         configurarCelda(holder.binding.cellDesayuno, holder.binding.txtDesayuno, med.pauta_desayuno, med.firmado_desayuno, "09:00") {
             onFirmarToma(med, "DES")
         }
@@ -72,7 +71,6 @@ class MedicacionAdapter(
 
         container.alpha = 1.0f
 
-        // Pintamos los colores según si viene firmada de MySQL o no
         if (firmada) {
             container.setBackgroundColor(Color.parseColor("#2E7D32"))
             txt.text = "✓ $hora"
@@ -83,7 +81,6 @@ class MedicacionAdapter(
             txt.setTextColor(Color.parseColor("#0B4F8A"))
         }
 
-        // EL CAMBIO CLAVE: El botón SIEMPRE reacciona al clic, sea verde o gris
         container.setOnClickListener { onClick() }
     }
 

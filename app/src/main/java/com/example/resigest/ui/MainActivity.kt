@@ -18,6 +18,9 @@ import com.example.resigest.ui.adapter.MedicacionAdapter
 import com.example.resigest.ui.adapter.ResidenteAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +44,14 @@ class MainActivity : AppCompatActivity() {
     private var selTomaComida: String = "Comida"
     private var selAceptacionIngesta: String = "Buena (100%)"
 
+    // Estados seleccionados para Cuidados
+    private var selTipoCuidado: String = "Ducha"
+
+    // Variables para gestionar la fecha del historial de medicación
+    private val calendario = Calendar.getInstance()
+    private val formatAPI = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val formatUI = SimpleDateFormat("dd MMM yyyy", Locale("es", "ES"))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         setupListeners()
         cargarPlanta(plantaActual)
+        actualizarFechaUI()
     }
 
     private fun setupUI() {
@@ -80,13 +92,6 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-                delegate.localNightMode = if (isChecked) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            }
         }
     }
 
@@ -105,15 +110,29 @@ class MainActivity : AppCompatActivity() {
                 binding.panelMedicacion.visibility = if (tab?.position == 0) View.VISIBLE else View.GONE
                 binding.panelEliminacion.visibility = if (tab?.position == 1) View.VISIBLE else View.GONE
                 binding.panelIngestas.visibility = if (tab?.position == 2) View.VISIBLE else View.GONE
-                binding.panelConstantes.visibility = if (tab?.position == 3) View.VISIBLE else View.GONE
-                binding.panelHistorial.visibility = if (tab?.position == 4) View.VISIBLE else View.GONE
+                binding.panelCuidados.visibility = if (tab?.position == 3) View.VISIBLE else View.GONE // NUEVO
+                binding.panelConstantes.visibility = if (tab?.position == 4) View.VISIBLE else View.GONE
+                binding.panelHistorial.visibility = if (tab?.position == 5) View.VISIBLE else View.GONE
 
                 if (tab?.position == 0) cargarMedicacion()
-                if (tab?.position == 4) cargarHistorial()
+                if (tab?.position == 5) cargarHistorial()
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+        // --- NAVEGACIÓN DE FECHAS (MEDICACIÓN) ---
+        binding.btnDiaAnterior.setOnClickListener {
+            calendario.add(Calendar.DAY_OF_YEAR, -1)
+            actualizarFechaUI()
+            cargarMedicacion()
+        }
+
+        binding.btnDiaSiguiente.setOnClickListener {
+            calendario.add(Calendar.DAY_OF_YEAR, 1)
+            actualizarFechaUI()
+            cargarMedicacion()
+        }
 
         // Selección de botones para eliminación
         binding.btnElimDiuresis.setOnClickListener { highlightButton(binding.btnElimDiuresis, listOf(binding.btnElimDeposicion, binding.btnElimMixto)); selTipoElim = "Solo Diuresis" }
@@ -144,6 +163,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnGuardarIngesta.setOnClickListener { guardarIngesta() }
         binding.btnGuardarConstantes.setOnClickListener { guardarConstantes() }
+
+        // --- BOTONES DE CUIDADOS / HIGIENE ---
+        val listaBotonesCuidados = listOf(
+            binding.btnAseoDucha, binding.btnAseoCama, binding.btnAseoBucal,
+            binding.btnCuidadoPiel, binding.btnCuidadoPostural
+        )
+        binding.btnAseoDucha.setOnClickListener { highlightButton(binding.btnAseoDucha, listaBotonesCuidados.filter { it != binding.btnAseoDucha }); selTipoCuidado = "Ducha" }
+        binding.btnAseoCama.setOnClickListener { highlightButton(binding.btnAseoCama, listaBotonesCuidados.filter { it != binding.btnAseoCama }); selTipoCuidado = "Aseo en Cama" }
+        binding.btnAseoBucal.setOnClickListener { highlightButton(binding.btnAseoBucal, listaBotonesCuidados.filter { it != binding.btnAseoBucal }); selTipoCuidado = "Aseo Bucal" }
+        binding.btnCuidadoPiel.setOnClickListener { highlightButton(binding.btnCuidadoPiel, listaBotonesCuidados.filter { it != binding.btnCuidadoPiel }); selTipoCuidado = "Hidratación Piel" }
+        binding.btnCuidadoPostural.setOnClickListener { highlightButton(binding.btnCuidadoPostural, listaBotonesCuidados.filter { it != binding.btnCuidadoPostural }); selTipoCuidado = "Cambio Postural" }
+
+        binding.btnGuardarCuidado.setOnClickListener { guardarCuidado() }
     }
 
     private fun highlightButton(selected: Button, others: List<Button>) {
@@ -152,6 +184,16 @@ class MainActivity : AppCompatActivity() {
         others.forEach {
             it.setBackgroundColor(Color.TRANSPARENT)
             it.setTextColor(Color.parseColor("#0B4F8A"))
+        }
+    }
+
+    private fun actualizarFechaUI() {
+        val hoy = Calendar.getInstance()
+        if (calendario.get(Calendar.YEAR) == hoy.get(Calendar.YEAR) &&
+            calendario.get(Calendar.DAY_OF_YEAR) == hoy.get(Calendar.DAY_OF_YEAR)) {
+            binding.tvFechaMedicacion.text = "Hoy"
+        } else {
+            binding.tvFechaMedicacion.text = formatUI.format(calendario.time)
         }
     }
 
@@ -173,7 +215,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun mostrarFichaResidente(res: ResidenteItem) {
         this.residenteSeleccionado = res
-        binding.tvCabeceraCama.text = "HAB: ${res.habitacion} - ${res.cama}"
+        binding.tvCabeceraCama.text = "HAB: ${res.habitacion}\n${res.cama}"
         binding.tvCabeceraNombre.text = "${res.apellidos}, ${res.nombre}"
         binding.tvCabeceraNHC.text = "NHC: ${res.nhc}"
 
@@ -190,16 +232,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun cargarMedicacion() {
         val res = residenteSeleccionado ?: return
+        val fechaPeticion = formatAPI.format(calendario.time) // Enviamos la fecha seleccionada
+
         lifecycleScope.launch {
             try {
-                val resp = api.getMedicacion(token, res.id)
+                val resp = api.getMedicacion(token, res.id, fechaPeticion)
                 if (resp.isSuccessful && resp.body() != null) {
                     adapterMedicacion.setData(resp.body()!!)
                 } else {
                     Toast.makeText(this@MainActivity, "Error servidor: ${resp.code()}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                // Ahora si hay un fallo de lectura, la tablet te lo dirá en pantalla en vez de quedarse vacía
                 Toast.makeText(this@MainActivity, "Fallo al leer pautas: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
@@ -275,6 +318,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun guardarCuidado() {
+        val res = residenteSeleccionado ?: return
+        val obs = binding.etObsCuidados.text.toString().trim()
+
+        lifecycleScope.launch {
+            try {
+                val dto = RegistroCuidadoDTO(
+                    residente_id = res.id,
+                    tipo_cuidado_id = 1, // ID Genérico para Higiene en BD
+                    valor_resultado = selTipoCuidado,
+                    observaciones = if (obs.isNotEmpty()) obs else null
+                )
+                val resp = api.postCuidado(token, dto)
+                if (resp.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "✓ $selTipoCuidado registrado correctamente", Toast.LENGTH_SHORT).show()
+                    binding.etObsCuidados.text?.clear()
+                    cargarHistorial() // Actualiza el cronograma al instante
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error en cuidado: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun guardarConstantes() {
         val res = residenteSeleccionado ?: return
         val sis = binding.etTASistolica.text.toString().toIntOrNull()
@@ -326,12 +393,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun firmarTomaHoraria(med: MedicacionItem, toma: String) {
         val res = residenteSeleccionado ?: return
+        val fechaPeticion = formatAPI.format(calendario.time) // La fecha seleccionada en la UI
+
         lifecycleScope.launch {
             try {
                 val dto = FirmaTomaDTO(
                     pauta_id = med.id,
                     residente_id = res.id,
-                    toma = toma
+                    toma = toma,
+                    fecha = fechaPeticion // Enviamos la fecha seleccionada
                 )
                 val resp = api.postFirmarToma(token, dto)
                 if (resp.isSuccessful) {

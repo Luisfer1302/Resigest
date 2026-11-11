@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/bg_app">
 
-    <!-- BARRA SUPERIOR ESTILO SELENE -->
+    <!-- BARRA SUPERIOR -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -33,10 +33,10 @@
             app:tabSelectedTextColor="#FFFFFF"
             app:tabTextColor="#B0BEC5"
             app:tabMode="fixed">
-            <com.google.android.material.tabs.TabItem android:text="Planta 1" />
-            <com.google.android.material.tabs.TabItem android:text="Planta 2" />
-            <com.google.android.material.tabs.TabItem android:text="Planta 3" />
-            <com.google.android.material.tabs.TabItem android:text="Planta 4" />
+            <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Planta 1" />
+            <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Planta 2" />
+            <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Planta 3" />
+            <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Planta 4" />
         </com.google.android.material.tabs.TabLayout>
 
         <View
@@ -62,7 +62,7 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!-- CUERPO PRINCIPAL DIVIDIDO EN 2 COLUMNAS -->
+    <!-- CUERPO PRINCIPAL DIVIDIDO EN 2 COlUMNAS -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -239,12 +239,13 @@
                 app:tabSelectedTextColor="@color/selene_blue"
                 app:tabIndicatorColor="@color/selene_blue"
                 app:tabTextColor="@color/text_secondary"
-                app:tabMode="fixed">
-                <com.google.android.material.tabs.TabItem android:text="PAUTAS MEDICACIÓN" />
-                <com.google.android.material.tabs.TabItem android:text="ELIMINACIÓN / PAÑAL" />
-                <com.google.android.material.tabs.TabItem android:text="CONTROL INGESTAS" />
-                <com.google.android.material.tabs.TabItem android:text="CONSTANTES" />
-                <com.google.android.material.tabs.TabItem android:text="CRONOGRAMA" />
+                app:tabMode="scrollable">
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PAUTAS MEDICACIÓN" />
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ELIMINACIÓN / PAÑAL" />
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONTROL INGESTAS" />
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CUIDADOS / HIGIENE" />
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CONSTANTES" />
+                <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CRONOGRAMA" />
             </com.google.android.material.tabs.TabLayout>
 
             <!-- 1. PANEL: SÁBANA HORARIA DE MEDICACIÓN ESTILO SELENE -->
@@ -256,6 +257,42 @@
                 android:background="@color/bg_surface"
                 android:padding="8dp"
                 android:visibility="visible">
+
+                <!-- SELECTOR DE FECHA PARA EL HISTORIAL DIARIO DE MEDICACIÓN -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:background="#F5F5F5">
+
+                    <ImageButton
+                        android:id="@+id/btnDiaAnterior"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@android:drawable/ic_media_previous"
+                        app:tint="@color/selene_blue" />
+
+                    <TextView
+                        android:id="@+id/tvFechaMedicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:text="Hoy"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btnDiaSiguiente"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@android:drawable/ic_media_next"
+                        app:tint="@color/selene_blue" />
+                </LinearLayout>
 
                 <!-- CABECERA HORARIA DE LA TABLA DE ADMINISTRACIÓN -->
                 <LinearLayout
@@ -765,6 +802,115 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+
+            <!-- 6. PANEL: CUIDADOS E HIGIENE -->
+            <ScrollView
+                android:id="@+id/panelCuidados"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_surface"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de Aseo / Cuidado:"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnAseoDucha"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Ducha" />
+
+                        <Button
+                            android:id="@+id/btnAseoCama"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Aseo en Cama" />
+
+                        <Button
+                            android:id="@+id/btnAseoBucal"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Aseo Bucal" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Cuidados Adicionales:"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <Button
+                            android:id="@+id/btnCuidadoPiel"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Hidratación Piel" />
+
+                        <Button
+                            android:id="@+id/btnCuidadoPostural"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Cambio Postural" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Observaciones (heridas, enrojecimiento, incidencias...)">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etObsCuidados"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardarCuidado"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="@color/selene_blue"
+                        android:text="REGISTRAR CUIDADOS" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

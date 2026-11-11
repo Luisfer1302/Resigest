@@ -22,6 +22,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ResiGestService {
 
@@ -39,7 +40,8 @@ interface ResiGestService {
     @GET("api/residentes/{id}/medicacion")
     suspend fun getMedicacion(
         @Header("Authorization") token: String,
-        @Path("id") residenteId: Int
+        @Path("id") residenteId: Int,
+        @Query("fecha") fecha: String? = null
     ): Response<List<MedicacionItem>>
 
     @POST("api/registros/medicacion")
